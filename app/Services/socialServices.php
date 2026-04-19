@@ -38,6 +38,7 @@ class SocialServices{
             || empty($user->DNI)             
             || empty($user->profile_picture) 
             || empty($user->birthdate)       
+            
             || $user->hardskill === 'Others';
     }
 }

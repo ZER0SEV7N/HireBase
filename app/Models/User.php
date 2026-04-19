@@ -25,11 +25,10 @@ class User extends Authenticatable
         'is_active',
         'status',
         'is_approved',
+
         'google_id',
         'github_id',
         'linkedin_id'
-        
-        
     ];
 
     
