@@ -63,7 +63,7 @@ class AuthController extends Controller
     }
 
     //Funcion para iniciar sesion
-    public function Login(Request $request)
+    public function login(Request $request)
     {
         try{
             $request->validate([
@@ -110,7 +110,7 @@ class AuthController extends Controller
     }
 
     //Funcion para cerrar sesion
-    public function Logout(Request $request)
+    public function logout(Request $request)
     {
         try{
             $request->user()->currentAccessToken()->delete();
@@ -137,7 +137,7 @@ class AuthController extends Controller
 
             $status = Password::sendResetLink($request->only('email'));
 
-                //Verificar si el enlace se envió correctamente
+            //Verificar si el enlace se envió correctamente
             if($status === Password::RESET_LINK_SENT){
                 return response()->json([
                     'success' => true,

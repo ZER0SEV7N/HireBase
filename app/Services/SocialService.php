@@ -6,7 +6,7 @@ use App\Models\User;
 use Laravel\Socialite\Contracts\User as SocialiteUser;
 
 //Clase global para el manejo de socialite 
-class SocialServices{
+class SocialService{
     
     //Funcion para encontrar o crear un usuario a partir de la información obtenida por socialite
     public function findOrCreate(SocialiteUser $socialiteUser, string $provider): User{
@@ -38,7 +38,8 @@ class SocialServices{
             || empty($user->DNI)             
             || empty($user->profile_picture) 
             || empty($user->birthdate)       
-            
-            || $user->hardskill === 'Others';
+            || empty($user->cv_url)           
+            || empty($user->hardSkill)        
+            || $user->hardSkill === 'Otros';  
     }
 }

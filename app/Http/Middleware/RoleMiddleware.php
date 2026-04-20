@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class roleMiddleware
 {
-
+    //Middleware para verificar si el usuario tiene rol de admin
     public function handle(Request $request, Closure $next): Response
     {
         if($request->user() && $request->user()->role === 'admin'){

@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\SocialAuthController;
+use App\Http\Controllers\SocialController;
 
 //Rutas publicas para registro, login y autenticación social
 Route::post('/register', [AuthController::class, 'register']);
@@ -15,8 +15,8 @@ Route::post('/password/recover', [AuthController::class, 'recoverPassword']);
 Route::post('/password/reset', [AuthController::class, 'resetPassword']);
 
 //Rutas para autenticación social
-Route::get('/auth/{provider}/redirect', [SocialAuthController::class, 'redirect']);
-Route::get('/auth/{provider}/callback', [SocialAuthController::class, 'callback']);
+Route::get('/auth/{provider}/redirect', [SocialController::class, 'redirect']);
+Route::get('/auth/{provider}/callback', [SocialController::class, 'callback']);
 
 //Rutas protegidas para el perfil del usuario autenticado
 Route::middleware('auth:sanctum')->group(function () {

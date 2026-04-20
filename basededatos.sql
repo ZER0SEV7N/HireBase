@@ -90,13 +90,22 @@ CREATE PROCEDURE sp_updateUser(
     IN p_lastname CHAR(50),
     IN p_email CHAR(50),
     IN p_DNI CHAR(9),
+    IN p_hardSkill ENUM('Frontend', 'Backend', 'Design', 'Analyst', 'Full Stack', 'Others'),
     IN p_password CHAR(64),
     IN p_profile_picture VARCHAR(50),
     IN p_bio TEXT
 )
 BEGIN
     UPDATE users
-    SET name = p_name, lastname = p_lastname, email = p_email, DNI = p_DNI, password = p_password, profile_picture = p_profile_picture, bio = p_bio
+    SET 
+        name = p_name, 
+        lastname = p_lastname, 
+        email = p_email, 
+        DNI = p_DNI, 
+        hardSkill = p_hardSkill, 
+        password = p_password, 
+        profile_picture = p_profile_picture, 
+        bio = p_bio
     WHERE id = p_id;
 END //
 
@@ -134,15 +143,15 @@ BEGIN
     WHERE id = p_id;
 END //
 
-
--- Procedimiento para crear el token de recuperación de contraseña
-CREATE PROCEDURE sp_recoveryPassword(
-    IN p_email CHAR(50),
-    IN p_token VARCHAR(100)
-)
+-- Procedimiento para dashboard
+CREATE PROCEDURE sp_dashboard()
 BEGIN
-    INSERT password_resets (email, token)
-    VALUES (p_email, p_token);
+    SELECT
+        count(*) AS total_users,
+        SUM(CASE WHEN status = 'Review' THEN 1 ELSE 0 END) AS Pending_Review,
+        SUM(CASE WHEN status = 'Interview' THEN 1 ELSE 0 END) AS in_Interview,
+        SUM(CASE WHEN status = 'Hired' THEN 1 ELSE 0 END) AS Hired,
+        SUM(CASE WHEN status = 'Rejected' THEN 1 ELSE 0 END) AS Rejected
+    FROM users
+    where role = 'user';
 END //
-
-DELIMITER ;
