@@ -17,9 +17,11 @@ CREATE TABLE users (
     password CHAR(64) NULL, -- 8
     role ENUM('admin', 'user') DEFAULT 'user', -- 9
     profile_picture VARCHAR(50) NULL, -- 10
-    is_active BOOLEAN DEFAULT TRUE, -- 11
-    status ENUM('Review', 'Interview', 'hired', 'Rejected') DEFAULT 'Review', -- 12
-    is_approved BOOLEAN DEFAULT FALSE, -- 13
+    bio TEXT NULL, -- 11
+    cv_url VARCHAR(255) NULL, -- 12
+    is_active BOOLEAN DEFAULT TRUE, -- 13
+    status ENUM('Review', 'Interview', 'Hired', 'Rejected') DEFAULT 'Review', -- 14
+    is_approved BOOLEAN DEFAULT FALSE, -- 15
 
     google_id VARCHAR(255) NULL, 
     github_id VARCHAR(255) NULL,
@@ -38,7 +40,7 @@ CREATE TABLE password_resets(
 
 -- Insertar un usuario de ejemplo
 INSERT users (name, lastname, email, birthdate, DNI, hardSkill, password, role, profile_picture, is_active, status, is_approved)
-VALUES ('Daniel', 'Singer', 'danielenriquesinger0@gmail.com', '2004-07-07', '000000001', 'Others', '123456', 'admin', NULL, TRUE, 'hired', TRUE);
+VALUES ('Daniel', 'Singer', 'danielenriquesinger0@gmail.com', '2004-07-07', '000000001', 'Others', '123456', 'admin', NULL, TRUE, 'Hired', TRUE);
 
 -- Crear Vista
 CREATE VIEW user_profiles AS
@@ -52,7 +54,9 @@ SELECT
     DNI,
     status,
     role,
-    profile_picture
+    profile_picture,
+    bio,
+    cv_url
 FROM users;
 
 -- ==========================================
@@ -86,13 +90,13 @@ CREATE PROCEDURE sp_updateUser(
     IN p_lastname CHAR(50),
     IN p_email CHAR(50),
     IN p_DNI CHAR(9),
-    IN p_hardSkill ENUM('Frontend', 'Backend', 'Design', 'Analyst', 'Full Stack', 'Others'),
     IN p_password CHAR(64),
-    IN p_profile_picture VARCHAR(50)
+    IN p_profile_picture VARCHAR(50),
+    IN p_bio TEXT
 )
 BEGIN
     UPDATE users
-    SET name = p_name, lastname = p_lastname, email = p_email, DNI = p_DNI, hardSkill = p_hardSkill, password = p_password, profile_picture = p_profile_picture
+    SET name = p_name, lastname = p_lastname, email = p_email, DNI = p_DNI, password = p_password, profile_picture = p_profile_picture, bio = p_bio
     WHERE id = p_id;
 END //
 
@@ -122,11 +126,11 @@ END //
 -- Procedimiento para cambiar el estado de un usuario
 CREATE PROCEDURE sp_changeStatus(
     IN p_id INT,
-    IN p_status ENUM('Review', 'Interview', 'hired', 'Rejected')
+    IN p_status ENUM('Review', 'Interview', 'Hired', 'Rejected')
 )
 BEGIN
     UPDATE users
-    SET status = p_status, is_approved = IF(p_status = 'hired', TRUE, FALSE)
+    SET status = p_status, is_approved = IF(p_status = 'Hired', TRUE, FALSE)
     WHERE id = p_id;
 END //
 

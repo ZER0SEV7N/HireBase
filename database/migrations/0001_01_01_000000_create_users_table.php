@@ -19,7 +19,9 @@ return new class extends Migration
             $table->string('password')->nullable();
             $table->enum('role', ['admin', 'user'])->default('user');
             $table->string('profile_picture')->nullable();
-            $table->enum('status', ['Review', 'Interview', 'hired', 'Rejected'])->default('Review');
+            $table->text('bio')->nullable();
+            $table->string('cv_url')->nullable();
+            $table->enum('status', ['Review', 'Interview', 'Hired', 'Rejected'])->default('Review');
             $table->boolean('is_approved')->default(false);
             $table->boolean('is_active')->default(true);
 

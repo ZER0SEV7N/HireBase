@@ -22,6 +22,8 @@ class User extends Authenticatable
         'password',
         'role',
         'profile_picture',
+        'bio',
+        'cv_url',
         'is_active',
         'status',
         'is_approved',
