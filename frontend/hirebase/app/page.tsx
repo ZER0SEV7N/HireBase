@@ -26,13 +26,13 @@ export default function HomePage() {
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-          <Link href="/register" className="w-full sm:w-auto">
+          <Link href="/auth" className="w-full sm:w-auto">
             <Button size="lg" className="w-full sm:w-auto px-8 bg-slate-900 hover:bg-slate-800 text-white">
               Start Now
             </Button>
           </Link>
           
-          <Link href="/login" className="w-full sm:w-auto">
+          <Link href="/auth" className="w-full sm:w-auto">
             <Button size="lg" variant="outline" className="w-full sm:w-auto px-8 border-slate-300 text-slate-700 hover:bg-slate-100">
               Sign In
             </Button>

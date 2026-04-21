@@ -40,6 +40,6 @@ class SocialService{
             || empty($user->birthdate)       
             || empty($user->cv_url)           
             || empty($user->hardSkill)        
-            || $user->hardSkill === 'Otros';  
+            || $user->hardSkill === 'Others';  
     }
 }

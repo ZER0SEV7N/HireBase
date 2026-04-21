@@ -21,13 +21,13 @@ function CallbackHandler() {
 
             //Si el usuario cancelo la autenticacion o hubo un error, redirigir al login con mensaje de error
             if(error){
-                router.push('/login?error=Authentication failed. Please try again.');
+                router.push(`/auth?error=${error}`);
                 return;
             }
 
             //Si no se recibe un token, redirigir al login con mensaje de error
             if(!token){
-                router.push('/login?error=No token received. Please try again.');
+                router.push('/auth');
                 return;
             }
 

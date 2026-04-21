@@ -1,7 +1,6 @@
 //frontend/hirebase/lib/config.tsx
 //Archivo de configuracion para la conexion con el backend
 import axios from "axios";
-import { error } from "console";
 export const API_URL = 'http://localhost:8000/api';
 
 const api = axios.create({

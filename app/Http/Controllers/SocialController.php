@@ -33,7 +33,7 @@ class SocialController extends Controller
         }
         catch (\Exception $e) {
             $frontend = env('FRONTEND_URL', 'http://localhost:3000');
-            return redirect()->to($frontend . '/login?error=' . $provider . '_auth_failed');
+            return redirect()->to($frontend . '/auth?error=' . $provider . '_auth_failed');
         }
 
         $user = $this->socialService->findOrCreate($socialUser, $provider);
