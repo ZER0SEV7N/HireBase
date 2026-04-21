@@ -15,20 +15,20 @@ class AuthController extends Controller
     //Funcion para registrar un nuevo usuario
     public function register(Request $request)
     {
-        try{
-            $request->validate([
-                'name' => 'required|string|max:50',
-                'lastname' => 'required|string|max:50',
-                'email' => 'required|email|unique:users',
-                'password' => 'required|string|min:6',
-                'DNI' => 'required|string|max:20|unique:users',
-                'birthdate' => 'required|date',
-                'hardSkill' => 'required|in:Frontend,Backend,Design,Analyst,Full Stack,Others',
-            ]);
+        $request->validate([
+            'name' => 'required|string|max:50',
+            'lastname' => 'required|string|max:50',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|string|min:8',
+            'DNI' => 'required|string|max:9|unique:users',
+            'birthdate' => 'required|date',
+            'hardSkill' => 'required|in:Frontend,Backend,Design,Analyst,Full Stack,Others',
+        ]);
+        try{  
 
             $hashPassword = Hash::make($request->password);
 
-            DB::statement('CALL sp_register(?,?,?,?,?,?,?,?)', [
+            DB::statement('CALL sp_register(?, ?, ?, ?, ?, ?, ?, ?, ?)', [
                 $request->name,        //name
                 $request->lastname,    //lastname
                 $request->email,       //email
@@ -65,16 +65,17 @@ class AuthController extends Controller
     //Funcion para iniciar sesion
     public function login(Request $request)
     {
-        try{
-            $request->validate([
-                'email' => 'required|email',
-                'password' => 'required|string'
-            ]);
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string|min:8'
+        ]);
 
+        try{ 
             //Intentar autenticar al usuario con las credenciales proporcionadas
             if(!Auth::attempt($request->only('email', 'password'))){
-                throw ValidationException::withMessages([
-                    'message' => ['The provided credentials are incorrect.']
+                return response()->json([
+                    'success' => false,
+                    'message' => 'The provided credentials are incorrect.'
                 ], 401);
             }
 
@@ -98,7 +99,7 @@ class AuthController extends Controller
             return response()->json([
                 'success' => true,
                 'data' => $data,
-                'message' => 'Login successful'
+                'message' => 'Login successfully'
             ], 200);
 
         } catch (\Exception $e) {
@@ -117,7 +118,7 @@ class AuthController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Logout successful'
+                'message' => 'Logout successfully'
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
@@ -130,11 +131,11 @@ class AuthController extends Controller
     //Funcion para recuperar la cuenta de un usuario
     public function recoverPassword(Request $request)
     {
-        try{
-            $request->validate([
-                'email' => 'required|email|exists:users,email'
-            ]);
+        $request->validate([
+            'email' => 'required|email|exists:users,email'
+        ]);
 
+        try{    
             $status = Password::sendResetLink($request->only('email'));
 
             //Verificar si el enlace se envió correctamente
@@ -151,6 +152,7 @@ class AuthController extends Controller
                 ], 400);
             }
         }catch (\Exception $e) {
+            dd("ERROR EN REGISTRO: " . $e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => 'Account recovery failed: ' . $e->getMessage()
@@ -161,16 +163,17 @@ class AuthController extends Controller
     //Funcion para completar el perfil del usuario después de la autenticación social
     public function completeProfile(Request $request)
     {
+        $user = $request->user();
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:50',
+            'lastname' => 'required|string|max:50',
+            'DNI' => 'required|string|max:9|unique:users,DNI,' . $user->id,
+            'birthdate' => 'required|date',
+            'hardSkill' => 'required|in:Frontend,Backend,Design,Analyst,Full Stack,Others',
+        ]);
+
         try{
-            $user = $request->user();
-
-            $validated = $request->validate([
-                'lastname' => 'required|string|max:50',
-                'DNI' => 'required|string|max:9|unique:users,DNI,' . $user->id,
-                'birthdate' => 'required|date',
-                'hardSkill' => 'required|in:Frontend,Backend,Design,Analyst,Full Stack,Others',
-            ]);
-
             $user->update($validated);
 
             return response()->json([
@@ -189,12 +192,13 @@ class AuthController extends Controller
     //Funcion para restablecer la contraseña del usuario
     public function resetPassword(Request $request)
     {
-        try{
-            $request->validate([
-                'token' => 'required|string',
-                'email' => 'required|email',
-                'password' => 'required|string|min:6|confirmed',
-            ]);
+        $request->validate([
+            'token' => 'required|string',
+            'email' => 'required|email',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        try{    
 
             $status = Password::reset(
                 $request->only('email', 'password', 'password_confirmation', 'token'),
@@ -210,7 +214,7 @@ class AuthController extends Controller
             if($status === Password::PASSWORD_RESET){
                 return response()->json([
                     'success' => true,
-                    'message' => 'Password reset successful'
+                    'message' => 'Password reset successfully'
                 ], 200);
             }
             else{

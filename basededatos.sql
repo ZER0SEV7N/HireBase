@@ -40,7 +40,11 @@ CREATE TABLE password_resets(
 
 -- Insertar un usuario de ejemplo
 INSERT users (name, lastname, email, birthdate, DNI, hardSkill, password, role, profile_picture, is_active, status, is_approved)
-VALUES ('Daniel', 'Singer', 'danielenriquesinger0@gmail.com', '2004-07-07', '000000001', 'Others', '123456', 'admin', NULL, TRUE, 'Hired', TRUE);
+VALUES ('Daniel', 'Singer', 'danielenriquesinger0@gmail.com', '2004-07-07', '000000001', 'Others', '123456', 'admin', NULL, TRUE, 'Hired', TRUE),
+       ('Maria', 'Gonzalez', 'maria.gonzalez@example.com', '1995-03-15', '000000002', 'Backend', 'password456', 'user', NULL, TRUE, 'Review', FALSE),
+       ('John', 'Doe', 'john.doe@example.com', '1990-01-01', '000000003', 'Frontend', 'password123', 'user', NULL, FALSE, 'Rejected', FALSE);
+
+
 
 -- Crear Vista
 CREATE VIEW user_profiles AS
