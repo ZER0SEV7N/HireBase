@@ -1,6 +1,6 @@
-//frontend/Hirebase/hooks/ProfileHook.tsx
+//frontend/Hirebase/hooks/SocialiteProfileHook.tsx
 //Hook encargado de manejar la logica relacionada al perfil del usuario
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { useAuth } from "@/context/AuthContext";

@@ -2,7 +2,7 @@
 //Componente para completar el perfil despues del registro, utiliza el hook useCompleteProfile para manejar la logica
 'use client';
 
-import { useCompleteProfile } from '@/hooks/ProfileHook';
+import { useCompleteProfile } from '@/hooks/SocialiteProfileHook';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
