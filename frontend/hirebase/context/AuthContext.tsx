@@ -4,7 +4,7 @@
 'use client';
 
 import React, { createContext, useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import api from '@/lib/config';
 import { User } from '@/types';
 
@@ -77,6 +77,7 @@ export const AuthProvider = ({ children }: {children:React.ReactNode}) => {
         }
     };
 
+    //Funcion para cerrar sesion, elimina el token y redirige a login
     const logout = async () => {
         try{
             await api.post('/logout');
