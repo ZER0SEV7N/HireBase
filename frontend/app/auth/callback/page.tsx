@@ -31,18 +31,26 @@ function CallbackHandler() {
                 return;
             }
 
-            try{
+          try {
                 localStorage.setItem('auth_token', token);
 
                 const res = await api.get('/profile');
-                const user = res.data;
+                const user = res.data.data; // <-- CORRECCIÓN AQUÍ
 
-                login(token, user);
-            }catch (error) {
+                const action = searchParams.get('action');
+
+                if (action === 'complete_profile') {
+                    router.push('/complete-profile');
+                } else {
+                    login(token, user);
+                }
+
+            } catch (error) {
                 console.error('Error during social login callback:', error);
                 localStorage.removeItem('auth_token');
-                router.push('/login?error=auth_failed');
+                router.push('/auth?error=auth_failed'); 
             }
+            
         };
         proccessCallback();
     }, [searchParams, router, login]);

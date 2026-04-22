@@ -1,12 +1,11 @@
 //Frontend/Hirebase/hooks/UserProfileHook.tsx
 //Hook encargado de manejar la logica relacionada al perfil del usuario
 import { useState } from 'react';
-import { set, useForm } from 'react-hook-form';
 import { useAuth } from '@/context/AuthContext';
 import api from '@/lib/config';
 
 //Tipo de datos para el formulario de completar perfil
-export type UserProfileData = {
+export type ProfileData = {
     name: string;
     lastname: string;
     email: string;
@@ -15,48 +14,69 @@ export type UserProfileData = {
 };
 
 //Hook personalizado para manejar la logica del perfil del usuario
-export const useUserProfile = () => {
+export const UserProfileInfo = () => {
     const { user, refreshProfile } = useAuth();
     const [isLoading, setIsLoading] = useState(false);
     const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
 
-    //Funcion para actualizar la informacion del perfil del usuario
-    const updateProfileInfo = async (data: UserProfileData) => {
+    //Funcion para actualizar la informacion del perfil
+    const updateProfileInfo = async (data: ProfileData) => {
         setIsLoading(true);
         setMessage(null);
         try {
-            await api.patch('/profile', data);
-            await refreshProfile(); // Actualiza el contexto con los nuevos datos
-            setMessage({ type: 'success', text: 'Profile updated successfully.' });
+            const res = await api.patch('/profile', data);
+            if (res.data.success) {
+                await refreshProfile(); 
+                setMessage({ type: 'success', text: 'Perfil actualizado con éxito.' });
+            }
         } catch (error: any) {
-            setMessage({ type: 'error', text: error.response?.data?.message || 'Failed to update profile.' });
+            setMessage({ type: 'error', text: error.response?.data?.message || 'Error al actualizar datos.' });
         } finally {
             setIsLoading(false);
         }
     };
 
-    //Funcion para actualizar la foto de perfil del usuario
-    const updateProfilePicture = async (fileList: FileList) => {
-        if (!fileList || fileList.length === 0) return;
+    //Funcion para actualizar la foto de perfil
+    const updateProfilePicture = async (file: File) => {
         setIsLoading(true);
-        setMessage(null);
-        
-        try {
-            const formData = new FormData();
-            formData.append('photo', fileList[0]); 
+        const formData = new FormData();
+        formData.append('photo', file); 
 
-            await api.post('/profile/picture', formData, {
+        try {
+            const res = await api.post('/profile/picture', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
-
-            await refreshProfile();
-            setMessage({ type: 'success', text: 'Profile picture updated.' });
+            if (res.data.success) {
+                await refreshProfile();
+                setMessage({ type: 'success', text: 'Foto actualizada.' });
+            }
         } catch (error: any) {
-            setMessage({ type: 'error', text: error.response?.data?.message || 'Failed to update picture.' });
+            setMessage({ type: 'error', text: 'Error al subir la imagen.' });
         } finally {
             setIsLoading(false);
         }
     };
 
-    return { updateProfileInfo, updateProfilePicture, isLoading, message, setMessage };
+    //Funcion para actualizar el CV
+    const updateCV = async (file: File) => {
+        setIsLoading(true);
+        const formData = new FormData();
+        formData.append('cv_file', file); 
+
+        try {
+            const res = await api.post('/profile/cv', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            });
+            if (res.data.success) {
+                await refreshProfile();
+                setMessage({ type: 'success', text: 'Currículum actualizado correctamente.' });
+            }
+        } catch (error: any) {
+            setMessage({ type: 'error', text: 'Error al subir el archivo PDF.' });
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    return { updateProfileInfo, updateProfilePicture, updateCV, isLoading, message, setMessage };
 };

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SocialController;
+use App\Http\Controllers\DashboardController;
 
 //Rutas publicas para registro, login y autenticación social
 Route::post('/register', [AuthController::class, 'register']);
@@ -40,5 +41,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/users', [UserController::class, 'index']);
         Route::patch('/users/{id}/status', [UserController::class, 'changeStatus']);
         Route::patch('/users/{id}/toggle-active', [UserController::class, 'toggleActive']);
+
+        //Ruta para obtener métricas del dashboard
+        Route::get('/dashboard/metrics', [DashboardController::class, 'getMetrics']);
     });
 });

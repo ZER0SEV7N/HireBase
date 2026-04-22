@@ -1,4 +1,4 @@
-//frontend/Hirebase/hooks/OnCandidateBoarding.tsx
+//frontend/Hirebase/hooks/BoardingHook.tsx
 //Hook encargado de manejar la logica relacionada al onboarding del candidato
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -10,7 +10,7 @@ export type BoardingFormData = {
   cv: FileList;
 };
 
-export const useCandidateOnboarding = () => {
+export const CandidateOnboarding = () => {
     const { user, refreshProfile } = useAuth();
     const [ isPending, setIsPending ] = useState(false);
     const [ error, setError ] = useState<string | null>(null);
