@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }: {children:React.ReactNode}) => {
 
         try{
             const res = await api.get('/profile')
-            setUser(res.data);
+            setUser(res.data.data);
         } catch (error) {
             console.error('Error fetching profile:', error);
             localStorage.removeItem('auth_token');
@@ -55,7 +55,7 @@ export const AuthProvider = ({ children }: {children:React.ReactNode}) => {
     const refreshProfile = async () => {
         try{
             const res = await api.get('/profile');
-            setUser(res.data);
+            setUser(res.data.data);
         } catch (error) {
             console.error('Error refreshing profile:', error);
         }

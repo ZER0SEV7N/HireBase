@@ -2,7 +2,7 @@
 //Componente del formulario de onboarding para candidatos
 'use client';
 
-import { useCandidateOnboarding } from '@/hooks/CandidateBoardingHook';
+import { useCandidateOnboarding } from '@/hooks/UserBoardingHook';
 import { Button } from '../ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '../ui/input';
