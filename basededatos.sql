@@ -159,3 +159,23 @@ BEGIN
     FROM users
     where role = 'user';
 END //
+
+-- Procedimiento para obtener los usuarios registrados en los últimos 7 días
+CREATE PROCEDURE sp_recentUsers()
+BEGIN
+    Select
+        DATE(created_at) AS registration_date,
+        COUNT(*) AS registration_count
+    FROM users
+    WHERE role = 'user'
+    GROUP BY registration_date
+    ORDER BY registration_date ASC
+    LIMIT 7;
+END //
+
+DELIMITER ;
+
+-- Datos de prueba
+CALL sp_register('Alice', 'Smith', 'alice.smith@example.com', '1992-05-10', '000000004', 'Frontend', 'password789', 'user', NULL);
+CALL sp_register('Bob', 'Johnson', 'bob.johnson@example.com', '1988-12-20', '000000005', 'Backend', 'password321', 'user', NULL);
+CALL sp_register('Charlie', 'Brown', 'charlie.brown@example.com', '1995-08-15', '000000006', 'Design', 'password987', 'user', NULL);

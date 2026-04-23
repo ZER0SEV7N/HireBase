@@ -31,6 +31,19 @@ export interface ApiResponse<T = any> {
     token?: string;
 }
 
+export type DashboardMetrics = {
+    total_users: number;
+    Pending_Review: number;
+    In_Interview: number;
+    Hired: number;
+    Rejected: number;
+};
+
+export type RegistrationTrend = {
+    date: string;
+    count: number;
+};
+
 
 export interface Socialite{
     provider: 'google' | 'github' | 'linkedin';

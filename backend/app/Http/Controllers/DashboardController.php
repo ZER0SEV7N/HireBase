@@ -11,13 +11,17 @@ class DashboardController extends Controller
     public function getMetrics()
     {
         try{
-            $metrics = DB::select('CALL sp_dashboard()');
+            $metricsRaw = DB::select('CALL sp_dashboard()');
+            $metrics = !empty($metricsRaw) ? $metricsRaw[0] : null;
 
-            $data = !empty($metrics) ? $metrics[0] : null;
+            $trend = DB::select('CALL sp_recentUsers()');
 
             return response()->json([
                 'success' => true,
-                'data' => $data,
+                'data' => [
+                    'metrics' => $metrics,
+                    'trend' => $trend
+                ],
                 'message' => 'Dashboard metrics retrieved successfully'
             ],200);
 

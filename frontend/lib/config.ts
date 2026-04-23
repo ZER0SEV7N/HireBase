@@ -8,9 +8,7 @@ const api = axios.create({
     headers: {
         'Content-Type': 'application/json',
     },
-    withCredentials: true, // Para enviar cookies en solicitudes CORS
-    // Configuración de CORS
-    // En el backend, asegúrate de configurar CORS para permitir solicitudes desde tu frontend
+    withCredentials: true
 });
 //Interceptores para requests y responses
 //Puedes agregar interceptores para manejar tokens de autenticación, errores globales, etc.
