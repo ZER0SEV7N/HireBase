@@ -3,11 +3,11 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: "HireBase | Applicant Tracking System",
-  description: "Encuentra tu próximo gran talento o tu próximo gran empleo.",
+  description: 'Your skill in the right place',
 };
 
 export default function RootLayout({
@@ -16,8 +16,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={`${inter.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-slate-50 font-sans text-slate-900">
+    <html lang="en" >
+      <body className={`${inter.className} antialiased text-slate-900`}>
         <AuthProvider>
           {children}
         </AuthProvider>

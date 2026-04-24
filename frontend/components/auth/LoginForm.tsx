@@ -7,7 +7,7 @@ import { useLogin, useSocialAuth } from "@/hooks/AuthHook";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription,  CardHeader, CardTitle } from "@/components/ui/card";
 
 export function LoginForm() {
     const { email, setEmail, password, setPassword, error, isLoading, handleSubmit } = useLogin();
@@ -24,7 +24,7 @@ export function LoginForm() {
             <CardContent>
                 {(error || socialError) && (
                     <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md mb-6 text-sm font-medium">
-                        {(error && !socialError) ? error : socialError}
+                        {error || socialError}
                     </div>
                 )}
                 <form onSubmit={handleSubmit} className="space-y-4">
@@ -52,6 +52,7 @@ export function LoginForm() {
                             type="password"
                             placeholder="••••••••"
                             value={password}
+                            minLength={8}
                             onChange={(e) => setPassword(e.target.value)}
                             required
                             className="focus-visible:ring-blue-500"
@@ -80,14 +81,6 @@ export function LoginForm() {
                     </Button>
                 </div>
             </CardContent>
-            <CardFooter className="flex justify-center border-t border-slate-100 pt-6">
-                <div className="text-sm text-slate-500">
-                    Don't have an account?{' '} 
-                    <Link href="/register" className="text-blue-600 hover:underline">
-                        Sign Up
-                    </Link>
-                </div>
-            </CardFooter>
         </Card>
     );
 }

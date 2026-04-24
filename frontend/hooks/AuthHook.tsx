@@ -92,17 +92,17 @@ export const useRegister = () => {
 
 //Hook para manejar la autentificacion social
 export const useSocialAuth = () => {
-    const [socialError, setSocialError] = useState(false);
+    const [socialError, setSocialError] = useState<string | null>(null);
 
     //Funcion para manejar el inicio de sesion con proveedores sociales
     const handleSocialLogin = async (provider: string) => {
         try{
             const res = await api.get(`/auth/${provider}/redirect`);
-            if(res.data.url)
+            if (res.data.success && res.data.url)
                 window.location.href = res.data.url; //Redirige al proveedor social
         }catch (error) {
             console.error('Error initiating social login:', error);
-            setSocialError(true);
+            setSocialError(`Could not connect to ${provider}. Check backend .env keys.`);
         }
     };
     return { handleSocialLogin, socialError };

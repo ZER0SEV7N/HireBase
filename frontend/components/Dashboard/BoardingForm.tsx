@@ -2,7 +2,7 @@
 //Componente del formulario de onboarding para candidatos
 'use client';
 
-import { useCandidateOnboarding } from '@/hooks/BoardingHook';
+import { CandidateOnboarding } from '@/hooks/BoardingHook';
 import { Button } from '../ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '../ui/input';
@@ -12,7 +12,7 @@ import { FileText, AlertCircle } from 'lucide-react';
 
 //Tipo de datos para el formulario de onboarding
 export default function OnBoardingForm() {
-    const { register, handleSubmit, errors, onUpload, isPending, error } = useCandidateOnboarding();
+    const { register, handleSubmit, errors, onUpload, isPending, error } = CandidateOnboarding();
 
     return (
 

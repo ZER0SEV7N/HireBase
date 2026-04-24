@@ -68,12 +68,9 @@ export const AuthProvider = ({ children }: {children:React.ReactNode}) => {
 
         //Redirigir dependiendo del rol
         if(userData.role === 'admin'){
-            router.push('/admin/dashboard');
+            router.push('/admin');
         } else {
-            if(!userData.cv_url)
-                router.push('/profile');
-            else
-                router.push('/dashboard');
+            router.push('/dashboard');
         }
     };
 

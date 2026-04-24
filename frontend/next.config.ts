@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  allowedDevOrigins: ['*'] //Permitir solicitudes desde cualquier origen durante el desarrollo
 };
 
 export default nextConfig;

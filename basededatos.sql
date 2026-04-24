@@ -38,11 +38,13 @@ CREATE TABLE password_resets(
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+--Contraseñas hasheadas para los usuarios de ejemplo (12345678)
+
 -- Insertar un usuario de ejemplo
 INSERT users (name, lastname, email, birthdate, DNI, hardSkill, password, role, profile_picture, is_active, status, is_approved)
-VALUES ('Daniel', 'Singer', 'danielenriquesinger0@gmail.com', '2004-07-07', '000000001', 'Others', '123456', 'admin', NULL, TRUE, 'Hired', TRUE),
-       ('Maria', 'Gonzalez', 'maria.gonzalez@example.com', '1995-03-15', '000000002', 'Backend', 'password456', 'user', NULL, TRUE, 'Review', FALSE),
-       ('John', 'Doe', 'john.doe@example.com', '1990-01-01', '000000003', 'Frontend', 'password123', 'user', NULL, FALSE, 'Rejected', FALSE);
+VALUES ('Daniel', 'Singer', 'danielenriquesinger0@gmail.com', '2004-07-07', '000000001', 'Others', '$12$sRG1d6Ib.GIol7b.4IAXqe.hyW1FlfDoXNiRyQVBiqC2fdpcE5RBa', 'admin', NULL, TRUE, 'Hired', TRUE),
+       ('Maria', 'Gonzalez', 'maria.gonzalez@example.com', '1995-03-15', '000000002', 'Backend', '$12$sRG1d6Ib.GIol7b.4IAXqe.hyW1FlfDoXNiRyQVBiqC2fdpcE5RBa', 'user', NULL, TRUE, 'Review', FALSE),
+       ('John', 'Doe', 'john.doe@example.com', '1990-01-01', '000000003', 'Frontend', '$12$sRG1d6Ib.GIol7b.4IAXqe.hyW1FlfDoXNiRyQVBiqC2fdpcE5RBa', 'user', NULL, FALSE, 'Rejected', FALSE);
 
 
 
@@ -176,6 +178,6 @@ END //
 DELIMITER ;
 
 -- Datos de prueba
-CALL sp_register('Alice', 'Smith', 'alice.smith@example.com', '1992-05-10', '000000004', 'Frontend', 'password789', 'user', NULL);
-CALL sp_register('Bob', 'Johnson', 'bob.johnson@example.com', '1988-12-20', '000000005', 'Backend', 'password321', 'user', NULL);
-CALL sp_register('Charlie', 'Brown', 'charlie.brown@example.com', '1995-08-15', '000000006', 'Design', 'password987', 'user', NULL);
+CALL sp_register('Alice', 'Smith', 'alice.smith@example.com', '1992-05-10', '000000004', 'Frontend', '$12$sRG1d6Ib.GIol7b.4IAXqe.hyW1FlfDoXNiRyQVBiqC2fdpcE5RBa', 'user', NULL);
+CALL sp_register('Bob', 'Johnson', 'bob.johnson@example.com', '1988-12-20', '000000005', 'Backend', '$12$sRG1d6Ib.GIol7b.4IAXqe.hyW1FlfDoXNiRyQVBiqC2fdpcE5RBa', 'user', NULL);
+CALL sp_register('Charlie', 'Brown', 'charlie.brown@example.com', '1995-08-15', '000000006', 'Design', '$12$sRG1d6Ib.GIol7b.4IAXqe.hyW1FlfDoXNiRyQVBiqC2fdpcE5RBa', 'user', NULL);

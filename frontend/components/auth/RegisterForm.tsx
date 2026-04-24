@@ -7,7 +7,7 @@ import { useRegister, useSocialAuth } from "@/hooks/AuthHook"
 import { Button } from "../ui/button"
 import { Input } from "../ui/input"
 import { Label } from "../ui/label"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card"
+import { Card, CardContent, CardDescription,  CardHeader, CardTitle } from "../ui/card"
 
 export function RegisterForm() {
     const { formData, handleChange, error, isLoading, handleRegisterSubmit } = useRegister();
@@ -80,7 +80,7 @@ export function RegisterForm() {
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="password">Password</Label>
-                            <Input id="password" type="password" minLength={6} placeholder="Minimum 6 characters" value={formData.password} onChange={handleChange} required />
+                            <Input id="password" type="password" minLength={8} placeholder="Minimum 8 characters" value={formData.password} onChange={handleChange} required />
                         </div>
                     </div>
 
@@ -107,14 +107,6 @@ export function RegisterForm() {
                     </Button>
                 </div>
             </CardContent>
-            <CardFooter className="flex justify-center border-t border-slate-100 pt-6">
-                <div className="text-sm text-slate-500">
-                    Do you already have an account?{' '}
-                    <Link href="/login" className="text-blue-600 hover:text-blue-500 font-semibold hover:underline">
-                        Sign In
-                    </Link>
-                </div>
-            </CardFooter>
         </Card>
     );
 }
