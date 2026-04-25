@@ -8,7 +8,6 @@ export default function AuthPage() {
     return (
         <div className="flex min-h-screen">
             
-           
             <div className="hidden lg:flex w-1/2 bg-slate-950 items-center justify-center p-12 relative overflow-hidden">
                 <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
                 <div className="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-indigo-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
@@ -24,7 +23,6 @@ export default function AuthPage() {
                 </div>
             </div>
 
-            {/* PANEL DERECHO: El Formulario */}
             <div className="flex w-full lg:w-1/2 items-center justify-center bg-slate-50 p-6 sm:p-12">
                 <div className="w-full max-w-md">
                     <Tabs defaultValue="login" className="w-full">

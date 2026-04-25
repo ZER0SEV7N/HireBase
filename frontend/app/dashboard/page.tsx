@@ -8,7 +8,7 @@ import { ProfileDashboard } from '@/components/Dashboard/ProfileDashboard';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from '@/components/ui/card';
-import { User, Briefcase, Bell, LayoutDashboard } from 'lucide-react';
+import { User, LayoutDashboard } from 'lucide-react';
 
 //Componente principal del dashboard
 export default function DashboardPage() {
@@ -62,7 +62,6 @@ export default function DashboardPage() {
                 </header>
 
                 {needsOnboarding ? (
-
                     <div className="max-w-3xl mx-auto mt-8">
                         <div className="mb-6 text-center space-y-2">
                             <h2 className="text-xl font-semibold text-slate-800">Almost ready to get started</h2>
@@ -71,7 +70,6 @@ export default function DashboardPage() {
                         <OnBoardingForm />
                     </div>
                 ) : (
-
                     <Tabs defaultValue="profile" className="w-full space-y-6">
                         
                         <div className="flex justify-center md:justify-start">
