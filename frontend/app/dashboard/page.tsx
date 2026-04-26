@@ -4,18 +4,19 @@
 
 import { useAuth } from '@/context/AuthContext';
 import OnBoardingForm from '@/components/Dashboard/BoardingForm';
-import { ProfileDashboard } from '@/components/Dashboard/ProfileDashboard';
+import { ProfileDashboard } from '@/components/Dashboard/UserDashboard';
+import MetricsCharts  from '@/components/Dashboard/MetricsCharts';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from '@/components/ui/card';
-import { User, LayoutDashboard } from 'lucide-react';
+import { User, LayoutDashboard, Briefcase, Bell } from 'lucide-react';
 
 //Componente principal del dashboard
 export default function DashboardPage() {
     const { user, isLoading } = useAuth();
 
     //Si el perfil del usuario no esta completo, mostrar el formulario de onboarding
-    if(isLoading) {
+    if (isLoading) {
         return (
             <div className="flex h-screen w-full items-center justify-center bg-slate-50">
                 <div className="flex flex-col items-center gap-2">
@@ -25,6 +26,28 @@ export default function DashboardPage() {
             </div>
         );
     }
+
+    //Vista de administador
+    if (user?.role === 'admin') {
+        return (
+            <div className="space-y-8 animate-in fade-in duration-500">
+                <header>
+                    <h1 className="text-3xl font-bold tracking-tight text-slate-900 flex items-center gap-3">
+                        <LayoutDashboard className="text-blue-600" size={32} />
+                        Welcome, {user?.name}
+                    </h1>
+                    <p className="text-slate-500 mt-1">Overview and general metrics of HireBase platform.</p>
+                </header>
+
+                <main>
+                    <MetricsCharts />
+                </main>
+            </div>
+        );
+    }
+
+
+    //Vista de candidato
     //Si el usuario no ha completado su perfil, mostrar el formulario de onboarding
     const needsOnboarding = !user?.cv_url || !user?.bio;
 
@@ -51,6 +74,7 @@ export default function DashboardPage() {
                             Manage your professional profile and check the status of your applications.
                         </p>
                     </div>
+
                     <div className="flex items-center gap-3 bg-slate-50 px-4 py-2 rounded-xl border border-slate-100">
                         <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
                             Current Status:
@@ -59,6 +83,7 @@ export default function DashboardPage() {
                             {user?.status || 'Under Review'}
                         </Badge>
                     </div>
+                    
                 </header>
 
                 {needsOnboarding ? (
@@ -76,6 +101,12 @@ export default function DashboardPage() {
                             <TabsList className="bg-white border border-slate-200 p-1 h-12 shadow-sm rounded-xl">
                                 <TabsTrigger value="profile" className="rounded-lg px-6 flex gap-2">
                                     <User size={16} /> Profile
+                                </TabsTrigger>
+                                <TabsTrigger value="applications" className="rounded-lg px-6 flex gap-2">
+                                    <Briefcase size={16} /> Applications
+                                </TabsTrigger>
+                                <TabsTrigger value="notifications" className="rounded-lg px-6 flex gap-2">
+                                    <Bell size={16} /> Notifications
                                 </TabsTrigger>
                             </TabsList>
                         </div>
@@ -102,7 +133,8 @@ export default function DashboardPage() {
 
                         <TabsContent value="notifications" className="mt-0 focus-visible:outline-none">
                             <div className="bg-white border border-slate-200 rounded-2xl p-8 text-center">
-                                <p className="text-slate-500 font-medium">No tienes notificaciones nuevas por el momento.</p>
+                                {/* Traducido al inglés */}
+                                <p className="text-slate-500 font-medium">You don't have new notifications at the moment.</p>
                             </div>
                         </TabsContent>
                     </Tabs>

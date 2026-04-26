@@ -17,11 +17,19 @@ class userController extends Controller
         try{
             $userProfile = DB::table('user_profiles')->where('id', Auth::id())->first();
 
+            if(!$userProfile) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User profile not found'
+                ], 404);
+            }
+
             return response()->json([
                 'success' => true,
                 'data' => $userProfile,
                 'message' => 'User profile retrieved successfully'
             ], 200);
+
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -39,16 +47,18 @@ class userController extends Controller
                 'name' => 'required|string|max:50',
                 'lastname' => 'required|string|max:50',
                 'email' => 'required|email|unique:users,email,' . $user->id,
-                'DNI' => 'required|string|max:20|unique:users,DNI,' . $user->id,
+                'DNI' => 'nullable|string|max:20|unique:users,DNI,' . $user->id,
+                'hardSkill' => 'nullable|in:Frontend,Backend,Design,Analyst,Full Stack,Others',
                 'bio' => 'nullable|string|max:2000',
             ]);
 
-            DB::statement('CALL sp_updateUser(?,?,?,?,?,?,?,?)', [
+            DB::statement('CALL sp_updateUser(?,?,?,?,?,?,?,?,?)', [
                 $user->id,             //id
                 $request->name,        //name
                 $request->lastname,    //lastname
                 $request->email,       //email
                 $request->DNI,         //DNI
+                $request->hardSkill ?? $user->hardSkill, //hardSkill (permite mantener el valor actual si no se proporciona uno nuevo)
                 $user->password,        //password
                 $user->profile_picture, //profile_picture 
                 $user->bio
@@ -143,7 +153,7 @@ class userController extends Controller
     public function index()
     {
         try{
-            $users = DB::table('user_profiles')->get();
+            $users = DB::table('user_profiles')->where('role', 'user')->get();
 
             return response()->json([
                 'success' => true,

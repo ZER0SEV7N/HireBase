@@ -65,13 +65,7 @@ export const AuthProvider = ({ children }: {children:React.ReactNode}) => {
     const login = (token: string, userData: User) => {
         localStorage.setItem('auth_token', token);
         setUser(userData);
-
-        //Redirigir dependiendo del rol
-        if(userData.role === 'admin'){
-            router.push('/admin');
-        } else {
-            router.push('/dashboard');
-        }
+        router.push('/dashboard');
     };
 
     //Funcion para cerrar sesion, elimina el token y redirige a login

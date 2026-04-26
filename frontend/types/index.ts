@@ -24,13 +24,6 @@ export interface User {
     updated_at?: string;
 }
 
-export interface ApiResponse<T = any> {
-    success: boolean;
-    data?: T;
-    message?: string;
-    token?: string;
-}
-
 export type DashboardMetrics = {
     total_users: number;
     Pending_Review: number;

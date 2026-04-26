@@ -38,16 +38,6 @@ CREATE TABLE password_resets(
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
---Contraseñas hasheadas para los usuarios de ejemplo (12345678)
-
--- Insertar un usuario de ejemplo
-INSERT users (name, lastname, email, birthdate, DNI, hardSkill, password, role, profile_picture, is_active, status, is_approved)
-VALUES ('Daniel', 'Singer', 'danielenriquesinger0@gmail.com', '2004-07-07', '000000001', 'Others', '$12$sRG1d6Ib.GIol7b.4IAXqe.hyW1FlfDoXNiRyQVBiqC2fdpcE5RBa', 'admin', NULL, TRUE, 'Hired', TRUE),
-       ('Maria', 'Gonzalez', 'maria.gonzalez@example.com', '1995-03-15', '000000002', 'Backend', '$12$sRG1d6Ib.GIol7b.4IAXqe.hyW1FlfDoXNiRyQVBiqC2fdpcE5RBa', 'user', NULL, TRUE, 'Review', FALSE),
-       ('John', 'Doe', 'john.doe@example.com', '1990-01-01', '000000003', 'Frontend', '$12$sRG1d6Ib.GIol7b.4IAXqe.hyW1FlfDoXNiRyQVBiqC2fdpcE5RBa', 'user', NULL, FALSE, 'Rejected', FALSE);
-
-
-
 -- Crear Vista
 CREATE VIEW user_profiles AS
 SELECT 
@@ -62,7 +52,9 @@ SELECT
     role,
     profile_picture,
     bio,
-    cv_url
+    cv_url,
+    is_active,
+    is_approved
 FROM users;
 
 -- ==========================================
@@ -84,8 +76,8 @@ CREATE PROCEDURE sp_register(
     IN p_profile_picture VARCHAR(50)
 )
 BEGIN
-    INSERT users (name, lastname, email, birthdate, DNI, hardSkill, password, role, profile_picture)
-    VALUES (p_name, p_lastname, p_email, p_birthdate, p_DNI, p_hardSkill, p_password, p_role, p_profile_picture);
+    INSERT users (name, lastname, email, birthdate, DNI, hardSkill, password, role, profile_picture, created_at, updated_at)
+    VALUES (p_name, p_lastname, p_email, p_birthdate, p_DNI, p_hardSkill, p_password, p_role, p_profile_picture, NOW(), NOW());
 END //
 
 
@@ -111,7 +103,8 @@ BEGIN
         hardSkill = p_hardSkill, 
         password = p_password, 
         profile_picture = p_profile_picture, 
-        bio = p_bio
+        bio = p_bio,
+        updated_at = NOW()
     WHERE id = p_id;
 END //
 
@@ -149,35 +142,15 @@ BEGIN
     WHERE id = p_id;
 END //
 
--- Procedimiento para dashboard
-CREATE PROCEDURE sp_dashboard()
-BEGIN
-    SELECT
-        count(*) AS total_users,
-        SUM(CASE WHEN status = 'Review' THEN 1 ELSE 0 END) AS Pending_Review,
-        SUM(CASE WHEN status = 'Interview' THEN 1 ELSE 0 END) AS in_Interview,
-        SUM(CASE WHEN status = 'Hired' THEN 1 ELSE 0 END) AS Hired,
-        SUM(CASE WHEN status = 'Rejected' THEN 1 ELSE 0 END) AS Rejected
-    FROM users
-    where role = 'user';
-END //
-
--- Procedimiento para obtener los usuarios registrados en los últimos 7 días
-CREATE PROCEDURE sp_recentUsers()
-BEGIN
-    Select
-        DATE(created_at) AS registration_date,
-        COUNT(*) AS registration_count
-    FROM users
-    WHERE role = 'user'
-    GROUP BY registration_date
-    ORDER BY registration_date ASC
-    LIMIT 7;
-END //
-
-DELIMITER ;
-
 -- Datos de prueba
-CALL sp_register('Alice', 'Smith', 'alice.smith@example.com', '1992-05-10', '000000004', 'Frontend', '$12$sRG1d6Ib.GIol7b.4IAXqe.hyW1FlfDoXNiRyQVBiqC2fdpcE5RBa', 'user', NULL);
-CALL sp_register('Bob', 'Johnson', 'bob.johnson@example.com', '1988-12-20', '000000005', 'Backend', '$12$sRG1d6Ib.GIol7b.4IAXqe.hyW1FlfDoXNiRyQVBiqC2fdpcE5RBa', 'user', NULL);
-CALL sp_register('Charlie', 'Brown', 'charlie.brown@example.com', '1995-08-15', '000000006', 'Design', '$12$sRG1d6Ib.GIol7b.4IAXqe.hyW1FlfDoXNiRyQVBiqC2fdpcE5RBa', 'user', NULL);
+
+-- Contraseñas hasheadas para los usuarios de ejemplo (12345678)
+-- Insertar un usuario de ejemplo
+INSERT users (name, lastname, email, birthdate, DNI, hardSkill, password, role, profile_picture, is_active, status, is_approved, created_at, updated_at)
+VALUES ('Daniel', 'Singer', 'adminhirebase@gmail.com', '2004-07-07', '000000001', 'Others', '$2y$12$sRG1d6Ib.GIol7b.4IAXqe.hyW1FlfDoXNiRyQVBiqC2fdpcE5RBa', 'admin', NULL, TRUE, 'Hired', TRUE, NOW(), NOW()),
+       ('Maria', 'Gonzalez', 'maria.gonzalez@example.com', '1995-03-15', '000000002', 'Backend', '$2y$12$sRG1d6Ib.GIol7b.4IAXqe.hyW1FlfDoXNiRyQVBiqC2fdpcE5RBa', 'user', NULL, TRUE, 'Review', FALSE, NOW(), NOW()),
+       ('John', 'Doe', 'john.doe@example.com', '1990-01-01', '000000003', 'Frontend', '$2y$12$sRG1d6Ib.GIol7b.4IAXqe.hyW1FlfDoXNiRyQVBiqC2fdpcE5RBa', 'user', NULL, FALSE, 'Rejected', FALSE, NOW(), NOW());
+
+CALL sp_register('Alice', 'Smith', 'alice.smith@example.com', '1992-05-10', '000000004', 'Frontend', '$2y$12$sRG1d6Ib.GIol7b.4IAXqe.hyW1FlfDoXNiRyQVBiqC2fdpcE5RBa', 'user', NULL);
+CALL sp_register('Bob', 'Johnson', 'bob.johnson@example.com', '1988-12-20', '000000005', 'Backend', '$2y$12$sRG1d6Ib.GIol7b.4IAXqe.hyW1FlfDoXNiRyQVBiqC2fdpcE5RBa', 'user', NULL);
+CALL sp_register('Charlie', 'Brown', 'charlie.brown@example.com', '1995-08-15', '000000006', 'Design', '$2y$12$sRG1d6Ib.GIol7b.4IAXqe.hyW1FlfDoXNiRyQVBiqC2fdpcE5RBa', 'user', NULL);

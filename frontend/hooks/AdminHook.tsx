@@ -54,5 +54,9 @@ export const AdminDashboard = () => {
         }
     };
 
+    useEffect(() => {
+        fetchCandidates();
+    }, [fetchCandidates]); 
+
     return { candidates, isLoading, actionLoading, changeStatus, toggleActive };
 };

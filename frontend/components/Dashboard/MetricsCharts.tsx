@@ -38,6 +38,11 @@ export default function MetricsCharts() {
         count : { label: "Registrations", color: "#033991" },
     } satisfies ChartConfig;
 
+    const formattedTrend = trend.map((item: any) => ({
+        date: item.registration_date,
+        count: Number(item.registration_count)
+    }));
+    
     return (
         <div className="space-y-6">
             
@@ -90,7 +95,7 @@ export default function MetricsCharts() {
                     </CardHeader>
                     <CardContent>
                         <ChartContainer config={barConfig} className="min-h-[300px] w-full">
-                            <BarChart accessibilityLayer data={trend} margin={{ top: 20, right: 0, left: 0, bottom: 0 }}>
+                            <BarChart accessibilityLayer data={formattedTrend} margin={{ top: 20, right: 0, left: 0, bottom: 0 }}>
                                 <CartesianGrid vertical={false} strokeDasharray="3 3" />
                                 <XAxis 
                                     dataKey="date" 
