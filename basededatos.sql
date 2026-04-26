@@ -44,6 +44,7 @@ SELECT
     id,
     CONCAT(name, ' ', lastname) AS fullname,
     name,
+    lastname,
     email,
     birthdate,
     hardSkill,
@@ -87,10 +88,9 @@ CREATE PROCEDURE sp_updateUser(
     IN p_name CHAR(50),
     IN p_lastname CHAR(50),
     IN p_email CHAR(50),
-    IN p_DNI CHAR(9),
     IN p_hardSkill ENUM('Frontend', 'Backend', 'Design', 'Analyst', 'Full Stack', 'Others'),
     IN p_password CHAR(64),
-    IN p_profile_picture VARCHAR(50),
+    IN p_profile_picture VARCHAR(255),
     IN p_bio TEXT
 )
 BEGIN
@@ -99,7 +99,6 @@ BEGIN
         name = p_name, 
         lastname = p_lastname, 
         email = p_email, 
-        DNI = p_DNI, 
         hardSkill = p_hardSkill, 
         password = p_password, 
         profile_picture = p_profile_picture, 

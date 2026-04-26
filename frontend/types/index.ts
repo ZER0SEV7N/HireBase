@@ -24,6 +24,16 @@ export interface User {
     updated_at?: string;
 }
 
+export type ProfileData = {
+    name: string;
+    lastname: string;
+    email: string;
+    hardSkill?: string;
+    DNI: string;
+    bio?: string;
+};
+
+
 export type DashboardMetrics = {
     total_users: number;
     Pending_Review: number;
@@ -37,8 +47,12 @@ export type RegistrationTrend = {
     count: number;
 };
 
-
 export interface Socialite{
     provider: 'google' | 'github' | 'linkedin';
     provider_id: string;
 }
+
+export type BoardingFormData = {
+  bio: string;
+  cv: FileList;
+};

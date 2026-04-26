@@ -5,14 +5,7 @@ import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { useAuth } from "@/context/AuthContext";
 import api from "@/lib/config";
-
-export type ProfileFormData = {
-    name: string;
-    lastname: string;
-    DNI: string;
-    birthdate: string;
-    hardSkill: 'Frontend' | 'Backend' | 'Design' | 'Analyst' | 'Full Stack' | 'Others';
-};
+import { ProfileData } from "@/types";
 
 export const useCompleteProfile = () => {
     const router = useRouter();
@@ -21,7 +14,7 @@ export const useCompleteProfile = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     //Inicializar el formulario con los datos del usuario si existen
-    const { register, handleSubmit, formState: { errors } } = useForm<ProfileFormData>({
+    const { register, handleSubmit, formState: { errors } } = useForm<ProfileData>({
         defaultValues: {
             name: user?.name || '',
             lastname: user?.lastname || '',
@@ -29,7 +22,7 @@ export const useCompleteProfile = () => {
     });
 
     //Funcion para manejar el submit del formulario
-    const onSubmit = async (data: ProfileFormData) => {
+    const onSubmit = async (data: ProfileData) => {
         setIsSubmitting(true);
         setSubmitError(null);
 

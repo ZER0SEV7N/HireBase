@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import api from "@/lib/config";
 
-
+//Hook para manejar el inicio de sesion
 export const useLogin = () => {
     const { login } = useAuth()!;
     const [email, setEmail] = useState("");

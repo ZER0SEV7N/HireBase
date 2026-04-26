@@ -6,7 +6,7 @@ import { use, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
-import { LayoutDashboard, Users, User, Briefcase, Bell, LogOut, Loader2 } from "lucide-react";
+import { LayoutDashboard, Users, LogOut, Loader2, UserCog } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 //Componente de diseño para el dashboard
@@ -33,8 +33,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
     return (
         <div className="flex min-h-screen bg-slate-50 font-sans">
-            
-            {/* SIDEBAR INTELIGENTE */}
+        
             <aside className="w-64 bg-slate-950 text-slate-300 flex flex-col transition-all duration-300 hidden md:flex">
                 <div className="h-16 flex items-center px-6 border-b border-slate-800 bg-slate-900">
                     <span className="text-xl font-bold text-white tracking-tight">
@@ -46,7 +45,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 </div>
 
                 <nav className="flex-1 py-6 px-4 space-y-2">
-
                     {isAdmin ? (
                         <>
                             <Link href="/dashboard" className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-800 hover:text-white transition-colors">
@@ -61,30 +59,28 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     ) : (
                         <>
                             <Link href="/dashboard" className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-800 hover:text-white transition-colors">
-                                <User size={20} />
-                                Profile
+                                <LayoutDashboard size={20} />
+                                My Application
                             </Link>
                         </>
                     )}
                 </nav>
 
                 <div className="p-4 border-t border-slate-800">
-                    <div className="flex items-center gap-3 px-3 py-3 mb-2">
-
-                        <div className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-sm font-bold text-white overflow-hidden">
+                    
+                    <Link href="/dashboard/profile" className="flex items-center gap-3 px-3 py-3 mb-2 rounded-lg hover:bg-slate-800/50 transition-colors group">
+                        <div className="w-9 h-9 rounded-full bg-slate-800 flex items-center justify-center text-sm font-bold text-white overflow-hidden border border-transparent group-hover:border-blue-500 transition-colors">
                             {user.profile_picture ? (
                                 <img src={user.profile_picture} alt="Avatar" className="w-full h-full object-cover" />
                             ) : (
                                 user.name.charAt(0)
                             )}
                         </div>
-
-                        <div className="flex flex-col">
+                        <div className="flex flex-col overflow-hidden">
                             <span className="text-sm font-medium text-white truncate w-32">{user.name}</span>
-                            <span className="text-xs text-slate-500 capitalize">{user.role}</span>
+                            <span className="text-[10px] text-slate-500 uppercase font-bold tracking-tighter">{user.role}</span>
                         </div>
-
-                    </div>
+                    </Link>
 
                     <Button variant="ghost" onClick={handleLogout} className="w-full justify-start text-red-400 hover:text-red-300 hover:bg-red-400/10">
                         <LogOut size={18} className="mr-2" />
@@ -101,5 +97,4 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </main>
         </div>
     )
-
 }

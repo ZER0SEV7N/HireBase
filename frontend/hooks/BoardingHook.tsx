@@ -4,12 +4,9 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAuth } from '@/context/AuthContext';
 import api from '@/lib/config';
+import { BoardingFormData } from '@/types';
 
-export type BoardingFormData = {
-  bio: string;
-  cv: FileList;
-};
-
+//Hook personalizado para manejar la logica del onboarding del candidato
 export const CandidateOnboarding = () => {
     const { user, refreshProfile } = useAuth();
     const [ isPending, setIsPending ] = useState(false);

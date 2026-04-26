@@ -4,7 +4,6 @@
 
 import { useAuth } from '@/context/AuthContext';
 import OnBoardingForm from '@/components/Dashboard/BoardingForm';
-import { ProfileDashboard } from '@/components/Dashboard/UserDashboard';
 import MetricsCharts  from '@/components/Dashboard/MetricsCharts';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -110,10 +109,6 @@ export default function DashboardPage() {
                                 </TabsTrigger>
                             </TabsList>
                         </div>
-
-                        <TabsContent value="profile" className="mt-0 focus-visible:outline-none">
-                            <ProfileDashboard />
-                        </TabsContent>
 
                         <TabsContent value="applications" className="mt-0 focus-visible:outline-none">
                             <Card className="p-12 border-2 border-dashed border-slate-200 bg-white/50 text-center rounded-2xl">

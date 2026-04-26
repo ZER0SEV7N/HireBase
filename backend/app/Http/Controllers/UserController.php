@@ -16,13 +16,17 @@ class userController extends Controller
     {
         try{
             $userProfile = DB::table('user_profiles')->where('id', Auth::id())->first();
-
+            
             if(!$userProfile) {
                 return response()->json([
                     'success' => false,
                     'message' => 'User profile not found'
                 ], 404);
             }
+
+            if ($userProfile->profile_picture) $userProfile->profile_picture = url('storage/' . $userProfile->profile_picture);
+            
+            if ($userProfile->cv_url) $userProfile->cv_url = url('storage/' . $userProfile->cv_url);
 
             return response()->json([
                 'success' => true,
@@ -154,6 +158,14 @@ class userController extends Controller
     {
         try{
             $users = DB::table('user_profiles')->where('role', 'user')->get();
+
+            $users->transform(function ($user) {
+                if ($user->profile_picture) $user->profile_picture = url('storage/' . $user->profile_picture);
+                
+                if ($user->cv_url) $user->cv_url = url('storage/' . $user->cv_url);
+                
+                return $user;
+            });
 
             return response()->json([
                 'success' => true,

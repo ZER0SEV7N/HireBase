@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => [env('FRONTEND_URL', 'http://localhost:3000')],
+    'allowed_origins' => [env('FRONTEND_URL', '*')], //Permitir solicitudes desde el frontend definido en el archivo .env
 
     'allowed_origins_patterns' => [],
 

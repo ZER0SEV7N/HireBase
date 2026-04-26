@@ -3,15 +3,7 @@
 import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import api from '@/lib/config';
-
-//Tipo de datos para el formulario de completar perfil
-export type ProfileData = {
-    name: string;
-    lastname: string;
-    email: string;
-    DNI: string;
-    bio?: string;
-};
+import { ProfileData } from '@/types';
 
 //Hook personalizado para manejar la logica del perfil del usuario
 export const UserProfileInfo = () => {
@@ -27,7 +19,7 @@ export const UserProfileInfo = () => {
             const res = await api.patch('/profile', data);
             if (res.data.success) {
                 await refreshProfile(); 
-                setMessage({ type: 'success', text: 'Perfil actualizado con éxito.' });
+                setMessage({ type: 'success', text: 'Profile updated' });
             }
         } catch (error: any) {
             setMessage({ type: 'error', text: error.response?.data?.message || 'Error al actualizar datos.' });
@@ -48,7 +40,7 @@ export const UserProfileInfo = () => {
             });
             if (res.data.success) {
                 await refreshProfile();
-                setMessage({ type: 'success', text: 'Foto actualizada.' });
+                setMessage({ type: 'success', text: 'Profile picture updated' });
             }
         } catch (error: any) {
             setMessage({ type: 'error', text: 'Error al subir la imagen.' });
@@ -80,3 +72,5 @@ export const UserProfileInfo = () => {
 
     return { updateProfileInfo, updateProfilePicture, updateCV, isLoading, message, setMessage };
 };
+
+
