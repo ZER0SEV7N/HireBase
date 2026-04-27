@@ -64,11 +64,13 @@ cd backend
 # Instala las dependencias de PHP
 composer install
 
+
 # Copia el archivo de entorno y genera la clave de la aplicación
 cp .env.example .env
 php artisan key:generate
 
 # Configura tu .env con el .env.example
+```
 --- 
 
 ### 2. Configuración del Frontend (Next.js)
@@ -86,7 +88,9 @@ npm install
 NEXT_PUBLIC_API_URL=http://localhost:8000/api
 
 ## Nota Importante sobre allowedDevOrigins e IPs Locales:
-## Si al clonar el proyecto te encuentras con errores de CORS o problemas para cargar imágenes locales, ten en cuenta que el entorno de desarrollo puede estar apuntando a una IP específica (ej. 192.168.1.x). Deberás actualizar esta IP por localhost o por tu IP actual en los siguientes lugares:
+## Si al clonar el proyecto te encuentras con errores de CORS o problemas para cargar imágenes locales, 
+## ten en cuenta que el entorno de desarrollo puede estar apuntando a una IP específica (ej. 192.168.1.x). 
+## Deberás actualizar esta IP por localhost o por tu IP actual en los siguientes lugares:
 
 # El archivo next.config.js o next.config.mjs del frontend (para los dominios permitidos de imágenes).
 
@@ -98,12 +102,12 @@ NEXT_PUBLIC_API_URL=http://localhost:8000/api
 
 npm run dev
 # El frontend estará disponible en http://localhost:3000
-
+```
 ---
 ### Pruebas Unitarias (Testing)
+```bash
 # El backend cuenta con una suite de pruebas automatizadas con PHPUnit para garantizar la integridad de las rutas de usuario, actualización de perfiles, validaciones estrictas y subida de archivos (Mock Storage).
 
 # Para ejecutar las pruebas, utiliza el siguiente comando dentro de la carpeta backend:
-
-```bash
 php artisan test --filter UserTest
+```
