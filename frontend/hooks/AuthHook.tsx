@@ -23,8 +23,8 @@ export const useLogin = () => {
                 email,
                 password
             });
-            const { token, user } = res.data.data;
-            login(token, user);
+            const { token } = res.data.data;
+            login(token, '/dashboard');
         }catch (error: any) {
             console.error('Login error:', error);
             setError(error.response?.data?.message || 'An error occurred during login');
@@ -73,8 +73,8 @@ export const useRegister = () => {
 
         try {
             const res = await api.post('/register', formData);
-            const { token, user } = res.data.data;
-            login(token, user); //Loguearse automaticamente despues de registrarse
+            const { token } = res.data.data;
+            login(token, '/dashboard'); 
         } catch (error: any) {
             console.error('Registration error:', error);
             setError(error.response?.data?.message || 'An error occurred during registration');
@@ -157,6 +157,16 @@ export const usePasswordRecovery = () => {
     };
 };
 
+export const dateFormatter = () => {
+    //Calcular la fecha máxima para la fecha de nacimiento (18 años atrás)
+    const today = new Date();
+    const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate())
+        .toISOString()
+        .split('T')[0];
+    return maxDate;
+}
+
+
 //Hook para manejar el cambio de contraseña
 export const usePasswordChange = () => {
     const [password, setPassword] = useState("");
@@ -182,7 +192,14 @@ export const usePasswordChange = () => {
         }
         catch (error: any) {
             console.error('Password change error:', error);
-            setError(error.response?.data?.message || 'An error occurred during password change');
+            //Manejo de errores de validación del backend
+            if (error.response?.status === 422 && error.response?.data?.errors) {
+                const validationErrors = error.response.data.errors;
+                const firstError = Object.values(validationErrors)[0] as string[];
+                setError(firstError[0]); 
+            } else {
+                setError(error.response?.data?.message || 'An error occurred during password change');
+            }
         }
         finally {
             setIsLoading(false);
@@ -193,6 +210,6 @@ export const usePasswordChange = () => {
         password, setPassword,
         passwordConfirmation, setPasswordConfirmation,
         message, error, isLoading,
-        handlePasswordReset
+        handlePasswordReset, dateFormatter
     };
 };

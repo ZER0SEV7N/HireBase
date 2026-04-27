@@ -3,6 +3,7 @@
 'use client';
 
 import { useCompleteProfile } from '@/hooks/SocialiteProfileHook';
+import { dateFormatter } from '@/hooks/AuthHook';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,12 +13,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 export default function CompleteProfile() {
     const { user } = useAuth();
     const { register, handleSubmit, errors, onSubmit, submitError, isSubmitting } = useCompleteProfile();
-
-    //Calcular la fecha máxima para la fecha de nacimiento (18 años atrás)
-    const today = new Date();
-    const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate())
-        .toISOString()
-        .split('T')[0];
 
     return (
         <Card className="w-full max-w-xl shadow-lg border-slate-200">
@@ -80,10 +75,10 @@ export default function CompleteProfile() {
                             <Input 
                                 id="birthdate" 
                                 type="date" 
-                                max={maxDate}
+                                max={dateFormatter()}
                                 {...register("birthdate", 
                                     { required: "The birth date is required",
-                                        validate: (value) => value <= maxDate || "You must be at least 18 years old"
+                                        validate: (value) => value <= dateFormatter() || "You must be at least 18 years old"
                                      })} 
                             />
                             {errors.birthdate && <p className="text-red-500 text-xs">{errors.birthdate.message}</p>}

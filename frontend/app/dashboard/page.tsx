@@ -56,7 +56,7 @@ export default function DashboardPage() {
             case 'Hired': return 'default';
             case 'Rejected': return 'destructive';
             case 'Interview': return 'secondary';
-            default: return 'outline'; // Review
+            default: return 'outline'; 
         }
     };
 

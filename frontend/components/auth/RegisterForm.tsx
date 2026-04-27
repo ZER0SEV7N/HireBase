@@ -2,8 +2,7 @@
 //Componente formulario para el registro de un nuevo usuario
 'use client'
 
-import Link from "next/link"
-import { useRegister, useSocialAuth } from "@/hooks/AuthHook"
+import { useRegister, useSocialAuth, dateFormatter } from "@/hooks/AuthHook"
 import { Button } from "../ui/button"
 import { Input } from "../ui/input"
 import { Label } from "../ui/label"
@@ -54,7 +53,12 @@ export function RegisterForm() {
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="birthdate">Birth Date</Label>
-                            <Input id="birthdate" type="date" value={formData.birthdate} onChange={handleChange} required />
+                            <Input 
+                                id="birthdate" 
+                                type="date" 
+                                max={dateFormatter()}
+                                value={formData.birthdate} 
+                                onChange={handleChange} required />
                         </div>
                     </div>
 
