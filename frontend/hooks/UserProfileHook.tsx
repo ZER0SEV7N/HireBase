@@ -7,7 +7,7 @@ import { ProfileData } from '@/types';
 
 //Hook personalizado para manejar la logica del perfil del usuario
 export const UserProfileInfo = () => {
-    const { user, refreshProfile } = useAuth();
+    const { refreshProfile } = useAuth();
     const [isLoading, setIsLoading] = useState(false);
     const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
 

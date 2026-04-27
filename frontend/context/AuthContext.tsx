@@ -7,16 +7,8 @@ import React, { createContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import api from '@/lib/config';
 import { User } from '@/types';
-
+import { AuthContextType } from '@/types/index';
 //estructura de datos del contexto de autenticacion
-interface AuthContextType {
-    user: User | null;
-    isAuthenticated: boolean;
-    isLoading: boolean;
-    login: (token: string, userData: User) => void;
-    logout: () => void;
-    refreshProfile: () => Promise<void>;
-}
 
 //Creacion del contexto de autenticacion
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -62,10 +54,10 @@ export const AuthProvider = ({ children }: {children:React.ReactNode}) => {
     }
 
     //Funcion para iniciar sesion, guarda el token y redirige segun el rol del usuario
-    const login = (token: string, userData: User) => {
+    const login = async (token: string, redirectTo: string = '/dashboard') => {
         localStorage.setItem('auth_token', token);
-        setUser(userData);
-        router.push('/dashboard');
+        await refreshProfile();
+        router.push(redirectTo);
     };
 
     //Funcion para cerrar sesion, elimina el token y redirige a login

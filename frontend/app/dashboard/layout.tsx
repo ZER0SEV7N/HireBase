@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { LayoutDashboard, Users, LogOut, Loader2, UserCog } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import CompleteProfile from "@/components/auth/CompleteProfile";
 
 //Componente de diseño para el dashboard
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -34,6 +35,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     return (
         <div className="flex min-h-screen bg-slate-50 font-sans">
         
+            {user && !user.DNI && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4">
+                    <CompleteProfile />
+                </div>
+            )}
+            
             <aside className="w-64 bg-slate-950 text-slate-300 flex flex-col transition-all duration-300 hidden md:flex">
                 <div className="h-16 flex items-center px-6 border-b border-slate-800 bg-slate-900">
                     <span className="text-xl font-bold text-white tracking-tight">

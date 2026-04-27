@@ -13,6 +13,12 @@ export default function CompleteProfile() {
     const { user } = useAuth();
     const { register, handleSubmit, errors, onSubmit, submitError, isSubmitting } = useCompleteProfile();
 
+    //Calcular la fecha máxima para la fecha de nacimiento (18 años atrás)
+    const today = new Date();
+    const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate())
+        .toISOString()
+        .split('T')[0];
+
     return (
         <Card className="w-full max-w-xl shadow-lg border-slate-200">
             <CardHeader className="space-y-1 text-center bg-slate-900 text-white rounded-t-xl pb-8 pt-10">
@@ -30,6 +36,7 @@ export default function CompleteProfile() {
                 )}
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                     
+                    {/* Fila 1: Nombres y Apellidos */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-2">
                             <Label htmlFor="name">Names <span className="text-red-500">*</span></Label>
@@ -73,7 +80,11 @@ export default function CompleteProfile() {
                             <Input 
                                 id="birthdate" 
                                 type="date" 
-                                {...register("birthdate", { required: "The birth date is required" })} 
+                                max={maxDate}
+                                {...register("birthdate", 
+                                    { required: "The birth date is required",
+                                        validate: (value) => value <= maxDate || "You must be at least 18 years old"
+                                     })} 
                             />
                             {errors.birthdate && <p className="text-red-500 text-xs">{errors.birthdate.message}</p>}
                         </div>

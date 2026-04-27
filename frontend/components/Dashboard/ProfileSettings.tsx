@@ -10,7 +10,7 @@ import { Camera, Save, Loader2, FileText, CheckCircle2, AlertCircle } from 'luci
 
 //Componente principal para mostrar y editar la informacion del perfil del usuario
 export function ProfileSettings () {
-    const { user, refreshProfile } = useAuth();
+    const { user } = useAuth();
     const { updateProfileInfo, updateProfilePicture, updateCV, isLoading, message, setMessage } = UserProfileInfo();
 
     const photoInputRef = useRef<HTMLInputElement>(null);
@@ -112,21 +112,48 @@ export function ProfileSettings () {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                         <label className="text-sm font-semibold text-slate-700">First Name</label>
-                        <input type="text" required value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+                        <input 
+                            type="text" 
+                            required value={formData.name} 
+                            onChange={e => setFormData({...formData, name: e.target.value})} 
+                            className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none" 
+                        />
                     </div>
                     <div className="space-y-2">
                         <label className="text-sm font-semibold text-slate-700">Last Name</label>
-                        <input type="text" required value={formData.lastname} onChange={e => setFormData({...formData, lastname: e.target.value})} className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+                        <input 
+                            type="text" 
+                            required value={formData.lastname} 
+                            onChange={e => setFormData({...formData, lastname: e.target.value})} 
+                            className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none" 
+                        />
                     </div>
                     <div className="space-y-2">
                         <label className="text-sm font-semibold text-slate-700">Email Address</label>
-                        <input type="email" required value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+                        <input 
+                            type="email" 
+                            required value={formData.email} 
+                            onChange={e => setFormData({...formData, email: e.target.value})} 
+                            className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none" 
+                        />
+                    </div>
+                    <div className="space-y-1.5">
+                        <label className="text-xs font-semibold text-slate-700 uppercase">Document (DNI)</label>
+                        <input 
+                            type="text" 
+                            readOnly 
+                            value={formData.DNI} 
+                            className="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm text-slate-500 cursor-not-allowed" 
+                        />
                     </div>
                     
                     {user.role !== 'admin' && (
                         <div className="space-y-2 md:col-span-2">
                             <label className="text-sm font-semibold text-slate-700">Specialty</label>
-                            <select value={formData.hardSkill} onChange={e => setFormData({...formData, hardSkill: e.target.value})} className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                            <select value={formData.hardSkill} 
+                                onChange={e => setFormData({...formData, hardSkill: e.target.value})} 
+                                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            >
                                 <option value="">Select your area</option>
                                 <option value="Frontend">Frontend</option>
                                 <option value="Backend">Backend</option>
@@ -141,7 +168,12 @@ export function ProfileSettings () {
 
                 <div className="space-y-2">
                     <label className="text-sm font-semibold text-slate-700">About Me (Bio)</label>
-                    <textarea rows={4} value={formData.bio} onChange={e => setFormData({...formData, bio: e.target.value})} placeholder="Tell us about your experience and goals..." className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none resize-none" />
+                    <textarea rows={4} 
+                        value={formData.bio} 
+                        onChange={e => setFormData({...formData, bio: e.target.value})} 
+                        placeholder="Tell us about your experience and goals..." 
+                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none resize-none" 
+                    />
                 </div>
 
                 <div className="pt-4 flex justify-end">

@@ -30,27 +30,25 @@ function CallbackHandler() {
                 router.push('/auth');
                 return;
             }
-
-          try {
-                localStorage.setItem('auth_token', token);
-
-                const res = await api.get('/profile');
-                const user = res.data.data; // <-- CORRECCIÓN AQUÍ
-
+            
+            //Si se recibe un token, verificarlo y obtener el perfil del usuario
+            try {
+                const res = await api.get('/profile', {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                const user = res.data.data;
                 const action = searchParams.get('action');
-
-                if (action === 'complete_profile') {
-                    router.push('/complete-profile');
-                } else {
-                    login(token, user);
-                }
+                //Redirigir al usuario segun la accion que se esperaba despues del login social
+                if (action === 'complete_profile') 
+                    login(token, '/auth/complete-profile'); 
+                else 
+                    login(token, '/dashboard');
 
             } catch (error) {
                 console.error('Error during social login callback:', error);
                 localStorage.removeItem('auth_token');
                 router.push('/auth?error=auth_failed'); 
-            }
-            
+            }  
         };
         proccessCallback();
     }, [searchParams, router, login]);
@@ -58,8 +56,8 @@ function CallbackHandler() {
     return (
         <div className="flex flex-col items-center justify-center min-h-[60vh]">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-slate-900 mb-4"></div>
-            <h2 className="text-xl font-semibold text-slate-800 tracking-tight">Verificando autenticación...</h2>
-            <p className="text-sm text-slate-500 mt-2">Preparando tu entorno de trabajo, por favor espera.</p>
+            <h2 className="text-xl font-semibold text-slate-800 tracking-tight">Verify authentication...</h2>
+            <p className="text-sm text-slate-500 mt-2">Please wait a minute, when prepare its dashboard.</p>
         </div>
     );
 }
@@ -68,7 +66,7 @@ export default function CallbackPage() {
     return (
         <Suspense fallback={
             <div className="flex min-h-screen items-center justify-center">
-                <div className="animate-pulse text-slate-500">Cargando...</div>
+                <div className="animate-pulse text-slate-500">Loading...</div>
             </div>
         }>
             <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4">

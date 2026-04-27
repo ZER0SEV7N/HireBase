@@ -24,10 +24,15 @@ class userController extends Controller
                 ], 404);
             }
 
-            if ($userProfile->profile_picture) $userProfile->profile_picture = url('storage/' . $userProfile->profile_picture);
+            //Validar si el profile_picture y cv_url son rutas relativas (almacenadas en la base de datos) 
+            //o URLs completas (ya procesadas), y convertirlas a URLs completas si es necesario
+            if ($userProfile->profile_picture && !str_starts_with($userProfile->profile_picture, 'http')) 
+                $userProfile->profile_picture = url('storage/' . $userProfile->profile_picture);
             
-            if ($userProfile->cv_url) $userProfile->cv_url = url('storage/' . $userProfile->cv_url);
-
+            
+            if ($userProfile->cv_url && !str_starts_with($userProfile->cv_url, 'http')) 
+                $userProfile->cv_url = url('storage/' . $userProfile->cv_url);
+            
             return response()->json([
                 'success' => true,
                 'data' => $userProfile,
@@ -160,9 +165,13 @@ class userController extends Controller
             $users = DB::table('user_profiles')->where('role', 'user')->get();
 
             $users->transform(function ($user) {
-                if ($user->profile_picture) $user->profile_picture = url('storage/' . $user->profile_picture);
+                if ($user->profile_picture && !str_starts_with($user->profile_picture, 'http')) 
+                    $user->profile_picture = url('storage/' . $user->profile_picture);
                 
-                if ($user->cv_url) $user->cv_url = url('storage/' . $user->cv_url);
+                
+                if ($user->cv_url && !str_starts_with($user->cv_url, 'http')) 
+                    $user->cv_url = url('storage/' . $user->cv_url);
+                
                 
                 return $user;
             });

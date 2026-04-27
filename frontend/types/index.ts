@@ -33,6 +33,15 @@ export type ProfileData = {
     bio?: string;
 };
 
+export type CompleteData = {
+    name: string;
+    lastname: string;
+    email: string;
+    birthdate: string;
+    hardSkill?: string;
+    DNI: string;
+    bio?: string;
+}
 
 export type DashboardMetrics = {
     total_users: number;
@@ -53,6 +62,15 @@ export interface Socialite{
 }
 
 export type BoardingFormData = {
-  bio: string;
-  cv: FileList;
+    bio: string;
+    cv: FileList;
 };
+
+export interface AuthContextType {
+    user: User | null;
+    isAuthenticated: boolean;
+    isLoading: boolean;
+    login: (token: string, redirectTo?: string) => Promise<void>;
+    logout: () => void;
+    refreshProfile: () => Promise<void>;
+}
