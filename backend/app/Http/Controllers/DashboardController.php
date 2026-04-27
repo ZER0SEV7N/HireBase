@@ -10,7 +10,6 @@ class DashboardController extends Controller
     public function getMetrics()
     {
         try{
-
             $metrics = DB::table('users')
                 ->selectRaw("
                     COUNT(*) AS total_users,

@@ -29,7 +29,6 @@ class userController extends Controller
             if ($userProfile->profile_picture && !str_starts_with($userProfile->profile_picture, 'http')) 
                 $userProfile->profile_picture = url('storage/' . $userProfile->profile_picture);
             
-            
             if ($userProfile->cv_url && !str_starts_with($userProfile->cv_url, 'http')) 
                 $userProfile->cv_url = url('storage/' . $userProfile->cv_url);
             
@@ -50,17 +49,17 @@ class userController extends Controller
     //Funcion para actualizar el perfil del usuario autenticado
     public function updateProfile(Request $request)
     {
-        try {
-            $user = $request->user();
-            $request->validate([
-                'name' => 'required|string|max:50',
-                'lastname' => 'required|string|max:50',
-                'email' => 'required|email|unique:users,email,' . $user->id,
-                'DNI' => 'nullable|string|max:20|unique:users,DNI,' . $user->id,
-                'hardSkill' => 'nullable|in:Frontend,Backend,Design,Analyst,Full Stack,Others',
-                'bio' => 'nullable|string|max:2000',
-            ]);
+        $user = $request->user();
+        $request->validate([
+            'name' => 'required|string|max:50',
+            'lastname' => 'required|string|max:50',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'DNI' => 'nullable|string|max:20|unique:users,DNI,' . $user->id,
+            'hardSkill' => 'nullable|in:Frontend,Backend,Design,Analyst,Full Stack,Others',
+            'bio' => 'nullable|string|max:2000',
+        ]);
 
+        try {
             DB::statement('CALL sp_updateUser(?,?,?,?,?,?,?,?,?)', [
                 $user->id,             //id
                 $request->name,        //name
@@ -89,13 +88,12 @@ class userController extends Controller
     //Funcion para actualizar la foto de perfil del usuario autenticado
     public function updateProfilePicture(Request $request)
     {
-        try{
-            $request->validate([
-                'photo' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
-            ]);
+        $user = $request->user();
+        $request->validate([
+            'photo' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
+        ]);
 
-            $user = $request->user();
-
+        try{    
             if($request->hasFile('photo')){
                 //Si el usuario ya tiene una foto de perfil, eliminarla antes de subir la nueva
                 if ($user->profile_picture && !str_starts_with($user->profile_picture, 'http')) 
@@ -128,14 +126,13 @@ class userController extends Controller
     //Funcion para subir o actualizar el CV del usuario atenticado
     public function uploadCV(Request $request)
     {
+        $user = $request->user();
+        $request->validate([
+            'cv_file' => 'nullable|file|mimes:pdf|max:5120', 
+        ]);
+
         try{
-            $user = $request->user();
-
-            $request->validate([
-                'cv_file' => 'nullable|file|mimes:pdf|max:5120', 
-            ]);
-
-            if($request->hasFile('cv_file')){
+             if($request->hasFile('cv_file')){
                 //Si el usuario ya tiene un CV, eliminarlo antes de subir el nuevo
                 if ($user->cv_url) 
                     Storage::disk('public')->delete($user->cv_url);
@@ -193,11 +190,11 @@ class userController extends Controller
     //Funcion para cambiar el estado del postulante
     public function changeStatus(Request $request, $id)
     {
-        try{
-            $request->validate([
-                'status' => 'required|in:Review,Interview,Hired,Rejected'
-            ]);
-            
+        $request->validate([
+            'status' => 'required|in:Review,Interview,Hired,Rejected'
+        ]);
+
+        try{    
             DB::statement('CALL sp_changeStatus(?,?)', [
                 $id,             
                 $request->status 
